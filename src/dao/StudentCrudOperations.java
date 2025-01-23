@@ -12,8 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentCrudOperations implements CrudOperations<Student> {
-    private final DataSource dataSource = new DataSource();
-    private final SexMapper sexMapper = new SexMapper();
+    private final DataSource dataSource;
+    private final SexMapper sexMapper;
+
+    // Surcharged constructor when we want to pass existing args (obj)
+    public StudentCrudOperations(DataSource dataSource, SexMapper sexMapper) {
+        this.dataSource = dataSource;
+        this.sexMapper = sexMapper;
+    }
+
+    // Default constructor when any args passed
+    public StudentCrudOperations() {
+        this.dataSource = new DataSource();
+        this.sexMapper = new SexMapper();
+    }
 
     @Override
     public List<Student> getAll() {

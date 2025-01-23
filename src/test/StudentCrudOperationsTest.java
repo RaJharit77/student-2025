@@ -10,6 +10,7 @@ import java.util.List;
 import static entity.Sex.MALE;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+// IMPORTANT : Note that this test can _NOT_ be run without passing database ENV variables
 class StudentCrudOperationsTest {
     // Always rename the class to test to 'subject'
     StudentCrudOperations subject = new StudentCrudOperations();
