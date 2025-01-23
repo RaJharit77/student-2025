@@ -1,5 +1,6 @@
 package dao;
 
+import dao.mapper.SexMapper;
 import db.DataSource;
 import entity.Student;
 
@@ -12,18 +13,20 @@ import java.util.List;
 
 public class StudentCrudOperations implements CrudOperations<Student> {
     private final DataSource dataSource = new DataSource();
+    private final SexMapper sexMapper = new SexMapper();
 
     @Override
     public List<Student> getAll() {
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
-            try (ResultSet resultSet = statement.executeQuery("select a.id, a.name, a.birth_date from student a")) {
+            try (ResultSet resultSet = statement.executeQuery("select s.id, s.name, s.birth_date, s.sex from student s")) {
                 List<Student> students = new ArrayList<>();
                 while (resultSet.next()) {
                     Student student = new Student();
                     student.setId(resultSet.getString("id"));
                     student.setName(resultSet.getString("name"));
                     student.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
+                    student.setSex(sexMapper.mapFromResultSet(resultSet.getString("sex")));
                     students.add(student);
                 }
                 return students;

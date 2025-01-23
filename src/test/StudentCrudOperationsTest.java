@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.List;
 
+import static entity.Sex.MALE;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class StudentCrudOperationsTest {
@@ -19,6 +20,7 @@ class StudentCrudOperationsTest {
         Student expectedStudent = new Student();
         expectedStudent.setId("student1_id");
         expectedStudent.setName("John Doe");
+        expectedStudent.setSex(MALE);
         expectedStudent.setBirthDate(LocalDate.of(2000, 1, 1));
 
         // Subject and the function to test

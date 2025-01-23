@@ -7,6 +7,7 @@ public class Student {
     private String id;
     private String name;
     private LocalDate birthDate;
+    private Sex sex ;
 
     public Student() {
     }
@@ -55,5 +56,13 @@ public class Student {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, birthDate);
+    }
+
+    public Sex getSex() {
+        return sex;
+    }
+
+    public void setSex(Sex sex) {
+        this.sex = sex;
     }
 }
