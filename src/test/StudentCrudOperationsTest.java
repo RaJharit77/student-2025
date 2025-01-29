@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static entity.Sex.MALE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // IMPORTANT : Note that this test can _NOT_ be run without passing database ENV variables
@@ -18,11 +19,7 @@ class StudentCrudOperationsTest {
     @Test
     void read_all_students_ok() {
         // Test for data and potential mock
-        Student expectedStudent = new Student();
-        expectedStudent.setId("student1_id");
-        expectedStudent.setName("John Doe");
-        expectedStudent.setSex(MALE);
-        expectedStudent.setBirthDate(LocalDate.of(2000, 1, 1));
+        Student expectedStudent = studentJohnDoe();
 
         // Subject and the function to test
         List<Student> actual = subject.getAll();
@@ -33,12 +30,23 @@ class StudentCrudOperationsTest {
 
     @Test
     void read_student_by_id_ok() {
-        throw new UnsupportedOperationException("TODO: not supported yet.");
+        var actual = subject.findById("student1_id");
+
+        assertEquals(studentJohnDoe(), actual);
     }
 
     @Test
     void create_then_update_student_ok() {
         throw new UnsupportedOperationException("TODO: not supported yet.");
+    }
+
+    private Student studentJohnDoe() {
+        Student expectedStudent = new Student();
+        expectedStudent.setId("student1_id");
+        expectedStudent.setName("John Doe");
+        expectedStudent.setSex(MALE);
+        expectedStudent.setBirthDate(LocalDate.of(2000, 1, 1));
+        return expectedStudent;
     }
 }
 

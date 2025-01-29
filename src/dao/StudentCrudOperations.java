@@ -49,8 +49,22 @@ public class StudentCrudOperations implements CrudOperations<Student> {
     }
 
     @Override
-    public Student findById(int id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Student findById(String id) {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
+            try (ResultSet resultSet = statement.executeQuery("select s.id, s.name, s.birth_date, s.sex from student s where id = '" + id + "'")) {
+                Student student = new Student();
+                while (resultSet.next()) {
+                    student.setId(resultSet.getString("id"));
+                    student.setName(resultSet.getString("name"));
+                    student.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
+                    student.setSex(sexMapper.mapFromResultSet(resultSet.getString("sex")));
+                }
+                return student;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
