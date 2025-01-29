@@ -27,7 +27,7 @@ class StudentCrudOperationsUnitTest {
     StudentCrudOperations subject = new StudentCrudOperations(dataSourceMock, sexMapperMock);
 
     @Test
-    void read_all_authors_ok() throws SQLException {
+    void read_all_students_ok() throws SQLException {
         // Additional object mocked
         Connection databaseConnectionMock = mock(Connection.class);
         Statement statementMock = mock(Statement.class);
