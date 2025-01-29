@@ -67,8 +67,27 @@ public class StudentCrudOperations implements CrudOperations<Student> {
         }
     }
 
+    // TODO: only create is handle now, update must be implemented
     @Override
     public List<Student> saveAll(List<Student> entities) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<Student> newStudents = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
+            entities.forEach(entityToSave -> {
+                try {
+                    statement.executeUpdate(
+                            "insert into student values ('" + entityToSave.getId() + "',"
+                                    + " '" + entityToSave.getName() + "',"
+                                    + "'" + entityToSave.getSex().toString() + "',"
+                                    + "'" + entityToSave.getBirthDate().toString() + "')");
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                newStudents.add(findById(entityToSave.getId()));
+            });
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return newStudents;
     }
 }

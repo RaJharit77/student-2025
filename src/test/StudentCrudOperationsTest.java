@@ -1,13 +1,16 @@
 package test;
 
 import dao.StudentCrudOperations;
+import entity.Sex;
 import entity.Student;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import static entity.Sex.FEMALE;
 import static entity.Sex.MALE;
+import static java.util.UUID.randomUUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -37,7 +40,14 @@ class StudentCrudOperationsTest {
 
     @Test
     void create_then_update_student_ok() {
-        throw new UnsupportedOperationException("TODO: not supported yet.");
+        var studentToBeCreated = newStudent(randomUUID().toString(), "Dummy", FEMALE, LocalDate.of(2000, 1, 1));
+
+        var actual = subject.saveAll(List.of(studentToBeCreated));
+        //TODO: update created students with saveAll when saveAll handle update
+
+        var allStudents = subject.getAll();
+        assertEquals(List.of(studentToBeCreated), actual);
+        assertTrue(allStudents.containsAll(actual));
     }
 
     private Student studentJohnDoe() {
@@ -47,6 +57,15 @@ class StudentCrudOperationsTest {
         expectedStudent.setSex(MALE);
         expectedStudent.setBirthDate(LocalDate.of(2000, 1, 1));
         return expectedStudent;
+    }
+
+    private Student newStudent(String id, String name, Sex sex, LocalDate birthDate) {
+        Student newStudent = new Student();
+        newStudent.setId(id);
+        newStudent.setName(name);
+        newStudent.setSex(sex);
+        newStudent.setBirthDate(birthDate);
+        return newStudent;
     }
 }
 
