@@ -4,10 +4,7 @@ import dao.mapper.SexMapper;
 import db.DataSource;
 import entity.Student;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +25,18 @@ public class StudentCrudOperations implements CrudOperations<Student> {
     }
 
     @Override
-    public List<Student> getAll() {
+    public List<Student> getAll(int page, int size) {
+        if (page < 1) {
+            throw new IllegalArgumentException("page must be greater than 0 but actual is " + page);
+        }
+        String sql = "select s.id, s.name, s.birth_date, s.sex from student s  order by s.sex desc limit ? offset ?";
         try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement()) {
-            try (ResultSet resultSet = statement.executeQuery("select s.id, s.name, s.birth_date, s.sex from student s")) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, size);
+            statement.setInt(2, size * (page - 1));
+            try (ResultSet resultSet = statement.executeQuery()) {
                 List<Student> students = new ArrayList<>();
-                while (resultSet.next()) {
+                while (resultSet.next() == true) {
                     Student student = new Student();
                     student.setId(resultSet.getString("id"));
                     student.setName(resultSet.getString("name"));

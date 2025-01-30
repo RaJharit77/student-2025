@@ -17,9 +17,9 @@ public class StudentManagementApplication {
         logger.info(connection.toString());
         connection.close();
 
-        // Check student getAll() works
+        // Check student getAll(1,3) works
         StudentCrudOperations studentCrudOperations = new StudentCrudOperations();
-        List<Student> students = studentCrudOperations.getAll();
+        List<Student> students = studentCrudOperations.getAll(1, 3);
         logger.info(students.toString());
     }
 }

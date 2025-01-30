@@ -25,10 +25,14 @@ class StudentCrudOperationsTest {
         Student expectedStudent = studentJohnDoe();
 
         // Subject and the function to test
-        List<Student> actual = subject.getAll();
+        List<Student> actualFemale = subject.getAll(1, 3);
+        List<Student> actualMale = subject.getAll(2, 3);
 
-        // Assertions : verification to be made automatically
-        assertTrue(actual.contains(expectedStudent));
+        assertEquals(3, actualFemale.size());
+        assertEquals(3, actualMale.size());
+        assertTrue(actualFemale.stream()
+                .allMatch(s -> s.getSex().equals(FEMALE)));
+        assertTrue(actualMale.stream().allMatch(s -> s.getSex().equals(MALE)));
     }
 
     @Test
@@ -45,7 +49,7 @@ class StudentCrudOperationsTest {
         var actual = subject.saveAll(List.of(studentToBeCreated));
         //TODO: update created students with saveAll when saveAll handle update
 
-        var allStudents = subject.getAll();
+        var allStudents = subject.getAll(1,3);
         assertEquals(List.of(studentToBeCreated), actual);
         assertTrue(allStudents.containsAll(actual));
     }
