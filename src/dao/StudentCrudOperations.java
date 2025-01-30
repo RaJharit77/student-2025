@@ -4,10 +4,7 @@ import dao.mapper.SexMapper;
 import db.DataSource;
 import entity.Student;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +27,8 @@ public class StudentCrudOperations implements CrudOperations<Student> {
     @Override
     public List<Student> getAll() {
         try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement()) {
-            try (ResultSet resultSet = statement.executeQuery("select s.id, s.name, s.birth_date, s.sex from student s")) {
+             PreparedStatement pstmt = (PreparedStatement) connection.createStatement()) {
+            try (ResultSet resultSet = pstmt.executeQuery("select s.id, s.name, s.birth_date, s.sex from student s where id")) {
                 List<Student> students = new ArrayList<>();
                 while (resultSet.next()) {
                     Student student = new Student();
