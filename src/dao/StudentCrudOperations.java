@@ -74,26 +74,37 @@ public class StudentCrudOperations implements CrudOperations<Student> {
     // TODO: only create is handle now, update must be implemented
     @Override
     public List<Student> saveAll(List<Student> entities) {
-        List<Student> newStudents = new ArrayList<>();
+        List<Student> savedStudents = new ArrayList<>();
         try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement()) {
-            entities.forEach(entityToSave -> {
-                try {
-                    statement.executeUpdate(
-                            "insert into student values ('" + entityToSave.getId() + "',"
-                                    + " '" + entityToSave.getName() + "',"
-                                    + "'" + entityToSave.getSex().toString() + "',"
-                                    + "'" + entityToSave.getBirthDate().toString() + "')");
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+             PreparedStatement checkStatement = connection.prepareStatement("SELECT id FROM student WHERE id = ?");
+             PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO student (id, name, sex, birth_date) VALUES (?, ?, ?, ?)");
+             PreparedStatement updateStatement = connection.prepareStatement("UPDATE student SET name = ?, sex = ?, birth_date = ? WHERE id = ?")) {
+
+            for (Student entityToSave : entities) {
+                checkStatement.setString(1, entityToSave.getId());
+                try (ResultSet resultSet = checkStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        updateStatement.setString(1, entityToSave.getName());
+                        updateStatement.setString(2, entityToSave.getSex().toString());
+                        updateStatement.setDate(3, Date.valueOf(entityToSave.getBirthDate()));
+                        updateStatement.setString(4, entityToSave.getId());
+                        updateStatement.executeUpdate();
+                    } else {
+                        insertStatement.setString(1, entityToSave.getId());
+                        insertStatement.setString(2, entityToSave.getName());
+                        insertStatement.setString(3, entityToSave.getSex().toString());
+                        insertStatement.setDate(4, Date.valueOf(entityToSave.getBirthDate()));
+                        insertStatement.executeUpdate();
+                    }
                 }
-                newStudents.add(findById(entityToSave.getId()));
-            });
+                savedStudents.add(findById(entityToSave.getId()));
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return newStudents;
+        return savedStudents;
     }
+
     public List<Student> filterStudents(String name, LocalDate startDate, LocalDate endDate) {
         String sql = "select s.id, s.name, s.birth_date, s.sex from student s where 1=1";
         if (name != null) {
@@ -120,6 +131,7 @@ public class StudentCrudOperations implements CrudOperations<Student> {
             throw new RuntimeException(e);
         }
     }
+    
     public List<Student> orderStudents(String orderBy) {
         String sql = "select s.id, s.name, s.birth_date, s.sex from student s";
         if (orderBy != null) {

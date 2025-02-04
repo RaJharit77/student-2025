@@ -47,11 +47,15 @@ class StudentCrudOperationsTest {
         var studentToBeCreated = newStudent(randomUUID().toString(), "Dummy", FEMALE, LocalDate.of(2000, 1, 1));
 
         var actual = subject.saveAll(List.of(studentToBeCreated));
-        //TODO: update created students with saveAll when saveAll handle update
-
-        var allStudents = subject.getAll(1,3);
         assertEquals(List.of(studentToBeCreated), actual);
-        assertTrue(allStudents.containsAll(actual));
+
+        studentToBeCreated.setName("Updated Dummy");
+        studentToBeCreated.setBirthDate(LocalDate.of(2001, 1, 1));
+        var updatedStudents = subject.saveAll(List.of(studentToBeCreated));
+
+        assertEquals(List.of(studentToBeCreated), updatedStudents);
+        var allStudents = subject.getAll(1, 3);
+        assertTrue(allStudents.containsAll(updatedStudents));
     }
 
     // TODO : make the changes inside the CrudOperations and its implementation to handle this
