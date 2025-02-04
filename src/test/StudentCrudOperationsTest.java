@@ -58,7 +58,6 @@ class StudentCrudOperationsTest {
     // Once test passed, set UnitTest corresponding
     @Test
     void read_students_filter_by_name_or_birthday_between_intervals_or_both() {
-<<<<<<< HEAD
         var student1 = newStudent("student1_id", "John Doe", MALE, LocalDate.of(2000, 1, 1));
         var student2 = newStudent("student2_id", "Jane Doe", FEMALE, LocalDate.of(2001, 5, 15));
         subject.saveAll(List.of(student1, student2));
@@ -73,18 +72,15 @@ class StudentCrudOperationsTest {
         var filteredByBoth = subject.filterStudents("Jane", LocalDate.of(2000, 1, 1), LocalDate.of(2001, 12, 31));
         assertEquals(1, filteredByBoth.size());
         assertEquals("Jane Doe", filteredByBoth.get(0).getName());
-=======
         assertThrows(UnsupportedOperationException.class, () -> {
             throw new UnsupportedOperationException("Not implemented yet");
         });
->>>>>>> 205169dd2450fbfd11480400c62bbc4711e3f832
     }
 
     // TODO : make the changes inside the CrudOperations and its implementation to handle this
     // Once test passed, set UnitTest corresponding
     @Test
     void read_students_order_by_name_or_birthday_or_both() {
-<<<<<<< HEAD
         var student1 = newStudent("student1_id", "John Doe", MALE, LocalDate.of(2000, 1, 1));
         var student2 = newStudent("student2_id", "Jane Doe", FEMALE, LocalDate.of(2001, 5, 15));
         subject.saveAll(List.of(student1, student2));
@@ -100,11 +96,9 @@ class StudentCrudOperationsTest {
         var orderedByBoth = subject.orderStudents("name, birth_date");
         assertEquals("Jane Doe", orderedByBoth.get(0).getName());
         assertEquals("John Doe", orderedByBoth.get(1).getName());
-=======
         assertThrows(UnsupportedOperationException.class, () -> {
             throw new UnsupportedOperationException("Not implemented yet");
         });
->>>>>>> 205169dd2450fbfd11480400c62bbc4711e3f832
     }
 
     private Student studentJohnDoe() {

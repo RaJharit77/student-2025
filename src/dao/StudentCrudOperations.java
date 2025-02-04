@@ -5,10 +5,7 @@ import db.DataSource;
 import entity.Student;
 
 import java.sql.*;
-<<<<<<< HEAD
 import java.time.LocalDate;
-=======
->>>>>>> 205169dd2450fbfd11480400c62bbc4711e3f832
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,7 +93,6 @@ public class StudentCrudOperations implements CrudOperations<Student> {
             throw new RuntimeException(e);
         }
         return newStudents;
-<<<<<<< HEAD
     }
     public List<Student> filterStudents(String name, LocalDate startDate, LocalDate endDate) {
         String sql = "select s.id, s.name, s.birth_date, s.sex from student s where 1=1";
@@ -146,7 +142,5 @@ public class StudentCrudOperations implements CrudOperations<Student> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-=======
->>>>>>> 205169dd2450fbfd11480400c62bbc4711e3f832
     }
 }
