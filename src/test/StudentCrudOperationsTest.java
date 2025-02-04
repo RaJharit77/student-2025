@@ -11,8 +11,8 @@ import java.util.List;
 import static entity.Sex.FEMALE;
 import static entity.Sex.MALE;
 import static java.util.UUID.randomUUID;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 // IMPORTANT : Note that this test can _NOT_ be run without passing database ENV variables
 class StudentCrudOperationsTest {
@@ -52,6 +52,24 @@ class StudentCrudOperationsTest {
         var allStudents = subject.getAll(1,3);
         assertEquals(List.of(studentToBeCreated), actual);
         assertTrue(allStudents.containsAll(actual));
+    }
+
+    // TODO : make the changes inside the CrudOperations and its implementation to handle this
+    // Once test passed, set UnitTest corresponding
+    @Test
+    void read_students_filter_by_name_or_birthday_between_intervals_or_both() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            throw new UnsupportedOperationException("Not implemented yet");
+        });
+    }
+
+    // TODO : make the changes inside the CrudOperations and its implementation to handle this
+    // Once test passed, set UnitTest corresponding
+    @Test
+    void read_students_order_by_name_or_birthday_or_both() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            throw new UnsupportedOperationException("Not implemented yet");
+        });
     }
 
     private Student studentJohnDoe() {
