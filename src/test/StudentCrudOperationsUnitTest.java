@@ -13,6 +13,7 @@ import java.util.List;
 
 import static entity.Sex.MALE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -27,7 +28,7 @@ class StudentCrudOperationsUnitTest {
     StudentCrudOperations subject = new StudentCrudOperations(dataSourceMock, sexMapperMock);
 
     @Test
-    void read_all_authors_ok() throws SQLException {
+    void read_all_students_ok() throws SQLException {
         // Additional object mocked
         Connection databaseConnectionMock = mock(Connection.class);
         Statement statementMock = mock(Statement.class);
@@ -59,9 +60,16 @@ class StudentCrudOperationsUnitTest {
         when(sexMapperMock.mapFromResultSet(any())).thenReturn(studentSex); // args any() means any value (MALE or FEMALE) obtained will ALWAYS return MALE here
 
         // Always the method to be tested
-        List<Student> actual = subject.getAll();
+        List<Student> actual = subject.getAll(1, 3);
 
         // Always the verification
         assertEquals(List.of(expectedStudent), actual);
+    }
+
+    @Test
+    void connection_attempt_failed() {
+        when(dataSourceMock.getConnection()).thenThrow(RuntimeException.class);
+
+        assertThrows(RuntimeException.class, () -> subject.getAll(1, 3));
     }
 }
